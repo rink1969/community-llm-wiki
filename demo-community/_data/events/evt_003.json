@@ -1,0 +1,16 @@
+{
+  "id": "evt_003",
+  "type": "activity",
+  "timestamp": 1715400000,
+  "initiator": "carol",
+  "co_creators": [
+    "dave"
+  ],
+  "participants": [
+    "alice",
+    "eve"
+  ],
+  "metadata": {
+    "title": "社区聚餐"
+  }
+}

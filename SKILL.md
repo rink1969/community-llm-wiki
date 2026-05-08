@@ -139,13 +139,48 @@ NR = new_connections / total_connections      （网络扩展）
 community_xiaoyao = average(xiaoyao(person))
 ```
 
+## 目录结构（Obsidian Vault）
+
+```
+my-community/
+├── SCHEMA.md               # 社区约定与结构规则
+├── index.md                # 总索引
+├── community.md            # 社区主页（价值观 + 状态指标）
+├── state.md                # 社区状态历史（时间序列）
+├── graph.md                # 关系图谱（当前快照）
+├── log.md                  # 操作日志（append-only）
+├── people/
+│   ├── alice.md            # 个人页（档案 + Event记录 + 关系网络 + 逍遥指数）
+│   ├── bob.md
+│   └── ...
+├── events/
+│   ├── evt_001.md          # Event页（参与者 + 角色 + 产出）
+│   ├── evt_002.md
+│   └── ...
+└── _data/                  # 机器生成的原始数据（JSON，供脚本读取）
+    ├── community.json
+    ├── events/
+    ├── people/
+    ├── state.json
+    └── graph.json
+```
+
+### 设计原则
+
+1. **所有人类可读内容都是 Markdown** — 直接放入 Obsidian
+2. **_data/ 目录存放机器生成的 JSON** — 脚本读取，人类通常不直接编辑
+3. **Markdown 文件由脚本自动生成/刷新** — 保持与 _data/ 同步
+4. **[[wikilinks]] 互相关联** — Obsidian Graph View 可视化
+5. **YAML frontmatter** — 支持 Dataview 查询
+6. **log.md append-only** — 记录所有变更
+
 ## 使用方式
 
 ### 初始化社区
 
 ```bash
 # 创建社区数据目录
-mkdir -p ./my-community/{events,people,community,state,graph}
+mkdir -p ./my-community
 
 # 使用脚本初始化
 python scripts/community_wiki_init.py --name "我的社区" --values "共在,涌现,逍遥" --output ./my-community
@@ -167,13 +202,17 @@ python scripts/community_wiki_ingest.py --community ./my-community --event '{
 }'
 ```
 
-### 计算图谱与状态
+### 刷新 Wiki（计算 + 生成 Markdown）
 
 ```bash
-# 计算关系图谱和社区状态
-python scripts/community_wiki_compute.py --community ./my-community --output ./my-community/state
+# 一键刷新：计算图谱状态 + 生成所有 Markdown
+python scripts/community_wiki_refresh.py --community ./my-community
 
-# 输出：graph.json + state.json
+# 这个脚本会：
+# 1. 读取 _data/ 中的 JSON
+# 2. 计算 graph.json + state.json
+# 3. 生成/更新所有 Markdown 页面
+# 4. 追加 log.md
 ```
 
 ### 查询与导航（Agent 层）
@@ -192,65 +231,31 @@ python scripts/community_wiki_query.py --community ./my-community --query "graph
 python scripts/community_wiki_query.py --community ./my-community --query "recommend" --for alice
 ```
 
-## 目录结构
-
-```
-my-community/
-├── community.json          # Community 本体
-├── events/
-│   ├── event_001.json      # Event 原始数据
-│   ├── event_002.json
-│   └── ...
-├── people/
-│   ├── alice.json          # Person 数据（含 event_refs）
-│   ├── bob.json
-│   └── ...
-├── state/
-│   ├── graph.json          # 计算出的关系图谱
-│   └── state.json          # 社区三指标状态
-└── log.md                  # 操作日志（append-only）
-```
-
-## 与 LLM Wiki 的对比
-
-| 维度 | LLM Wiki | CAiOS |
-|------|----------|-------|
-| 核心单元 | Source（信息源） | Event（行动/协作） |
-| 连接逻辑 | 语义关联（概念相似） | 关系密度（协作事实） |
-| 时间性 | 可静态积累 | 必须持续更新（Event 驱动） |
-| 主体 | 知识（客观） | 人（在关系中生成） |
-| 产出 | 理解、洞察 | 作品、项目、关系网络 |
-| 哲学 | 认知论 | 存在论（因作而是） |
-
 ## 脚本工具
 
-- `scripts/community_wiki_init.py` — 初始化社区目录结构
-- `scripts/community_wiki_ingest.py` — 导入 Event 数据
-- `scripts/community_wiki_compute.py` — 计算关系图谱与社区状态
-- `scripts/community_wiki_generate.py` — **生成 Markdown Wiki**（核心输出）
-- `scripts/community_wiki_query.py` — 查询接口：state / person / graph / recommend
-- `scripts/community_wiki_export.py` — 导出：GEXF / Cytoscape / Markdown / CSV
+| 脚本 | 功能 |
+|------|------|
+| `community_wiki_init.py` | 初始化社区目录结构 |
+| `community_wiki_ingest.py` | 导入 Event 数据，自动更新 Person event_refs |
+| `community_wiki_refresh.py` | **核心脚本**：计算图谱状态 + 生成所有 Markdown |
+| `community_wiki_query.py` | 查询接口：state / person / graph / recommend |
+| `community_wiki_export.py` | 导出：GEXF / Cytoscape / Markdown / CSV |
+
 详见各脚本的 `--help` 输出。
 
-## 最终输出：Markdown Wiki
+## 最终输出：Obsidian 兼容的 Markdown Wiki
 
-`community_wiki_generate.py` 是核心输出脚本，它将社区数据生成为一组互相关联的 **Markdown 文件**，形成完整的社区知识图谱 Wiki：
+`community_wiki_refresh.py` 是核心脚本，它将社区数据生成为一组互相关联的 **Markdown 文件**，形成完整的社区知识图谱 Wiki：
 
-```
-wiki/
-├── index.md              # 索引页（总目录）
-├── community.md          # 社区主页（价值观 + 三指标 + 活跃成员）
-├── graph.md              # 关系图谱（所有关系边 + 密度 + 共同 Event）
-├── log.md                # 操作日志
-├── people/
-│   ├── alice.md          # 个人页（逍遥指数 + Event 记录 + 关系网络）
-│   ├── bob.md
-│   └── ...
-└── events/
-    ├── evt_001.md        # Event 页（参与者 + 角色 + 协作产出）
-    ├── evt_002.md
-    └── ...
-```
+### 生成的 Markdown 页面
+
+- **index.md** — 索引页（总目录，链接到所有页面）
+- **community.md** — 社区主页（价值观 + 三指标 + 活跃成员排名）
+- **state.md** — 状态历史（时间序列记录，append-only）
+- **graph.md** — 关系图谱（所有关系边 + 密度 + 共同 Event）
+- **log.md** — 操作日志（社区变更记录）
+- **people/*.md** — 个人页（逍遥指数 + Event 记录 + 关系网络）
+- **events/*.md** — Event 页（参与者 + 角色 + 协作产出）
 
 ### 特性
 

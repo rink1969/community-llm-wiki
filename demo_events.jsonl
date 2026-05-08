@@ -1,2 +1,0 @@
-{"id":"evt_001","type":"activity","timestamp":1715200000,"initiator":"alice","co_creators":["bob"],"participants":["carol","dave"],"metadata":{"title":"周末共创会"},"artifacts":[{"type":"photo","url":"https://example.com/photo1.jpg"}]}
-{"id":"evt_002","type":"project","timestamp":1715300000,"initiator":"bob","co_creators":["alice","carol"],"participants":["dave","eve"],"metadata":{"title":"开源项目启动"},"artifacts":[{"type":"doc","url":"https://example.com/doc1.md"},{"type":"link","url":"https://github.com/example/repo"}]}

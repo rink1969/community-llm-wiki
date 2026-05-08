@@ -30,21 +30,23 @@
     {
       "source": "alice",
       "target": "carol",
-      "density": 4.0,
+      "density": 5.5,
       "type": "normal",
       "events": [
         "evt_001",
-        "evt_002"
+        "evt_002",
+        "evt_003"
       ]
     },
     {
       "source": "alice",
       "target": "dave",
-      "density": 2.7,
-      "type": "weak",
+      "density": 3.9,
+      "type": "normal",
       "events": [
         "evt_001",
-        "evt_002"
+        "evt_002",
+        "evt_003"
       ]
     },
     {
@@ -70,11 +72,12 @@
     {
       "source": "carol",
       "target": "dave",
-      "density": 2.2,
-      "type": "weak",
+      "density": 5.2,
+      "type": "normal",
       "events": [
         "evt_001",
-        "evt_002"
+        "evt_002",
+        "evt_003"
       ]
     },
     {
@@ -89,28 +92,31 @@
     {
       "source": "alice",
       "target": "eve",
-      "density": 1.2,
+      "density": 2.2,
       "type": "weak",
       "events": [
-        "evt_002"
+        "evt_002",
+        "evt_003"
       ]
     },
     {
       "source": "carol",
       "target": "eve",
-      "density": 1.2,
+      "density": 2.7,
       "type": "weak",
       "events": [
-        "evt_002"
+        "evt_002",
+        "evt_003"
       ]
     },
     {
       "source": "dave",
       "target": "eve",
-      "density": 1.0,
+      "density": 2.2,
       "type": "weak",
       "events": [
-        "evt_002"
+        "evt_002",
+        "evt_003"
       ]
     }
   ],

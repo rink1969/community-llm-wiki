@@ -1,0 +1,40 @@
+{
+  "co_presence": 2.2,
+  "emergence": 1.0,
+  "xiaoyao": 0.6986,
+  "people_count": 5,
+  "event_count": 3,
+  "edge_count": 10,
+  "individual_xiaoyao": {
+    "alice": {
+      "ir": 0.3333,
+      "re": 1.585,
+      "nr": 1.0,
+      "score": 0.9088
+    },
+    "bob": {
+      "ir": 0.5,
+      "re": 1.0,
+      "nr": 1.0,
+      "score": 0.8
+    },
+    "carol": {
+      "ir": 0.3333,
+      "re": 1.585,
+      "nr": 1.0,
+      "score": 0.9088
+    },
+    "dave": {
+      "ir": 0.0,
+      "re": 0.9183,
+      "nr": 1.0,
+      "score": 0.5755
+    },
+    "eve": {
+      "ir": 0.0,
+      "re": 0.0,
+      "nr": 1.0,
+      "score": 0.3
+    }
+  }
+}

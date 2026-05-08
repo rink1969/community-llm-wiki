@@ -17,6 +17,12 @@
       "role": "co_creator",
       "type": "project",
       "timestamp": 1715300000
+    },
+    {
+      "event_id": "evt_003",
+      "role": "initiator",
+      "type": "activity",
+      "timestamp": 1715400000
     }
   ],
   "external_inputs": []

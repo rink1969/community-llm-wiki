@@ -1,5 +1,5 @@
 {
-  "id": "dave",
+  "id": "eve",
   "profile": {},
   "skills": [],
   "interests": [],
@@ -7,16 +7,16 @@
   "works_input": [],
   "event_refs": [
     {
-      "event_id": "evt_001",
-      "role": "participant",
-      "type": "activity",
-      "timestamp": 1715200000
-    },
-    {
       "event_id": "evt_002",
       "role": "participant",
       "type": "project",
       "timestamp": 1715300000
+    },
+    {
+      "event_id": "evt_003",
+      "role": "participant",
+      "type": "activity",
+      "timestamp": 1715400000
     }
   ],
   "external_inputs": []
