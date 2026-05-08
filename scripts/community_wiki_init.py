@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-caios_init.py — 初始化 Community AI-OS 社区目录结构
+community_wiki_init.py — 初始化 Community AI-OS 社区目录结构
 
 Usage:
-    python caios_init.py --name "我的社区" --values "共在,涌现,逍遥" --output ./my-community
+    python community_wiki_init.py --name "我的社区" --values "共在,涌现,逍遥" --output ./my-community
 """
 import argparse
 import json

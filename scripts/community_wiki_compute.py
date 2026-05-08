@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-caios_compute.py — 计算关系图谱与社区状态
+community_wiki_compute.py — 计算关系图谱与社区状态
 
 计算内容：
   1. Relationship Density Graph（关系密度图）
@@ -8,7 +8,7 @@ caios_compute.py — 计算关系图谱与社区状态
   3. 个人逍遥指数
 
 Usage:
-    python caios_compute.py --community ./my-community --output ./my-community/state
+    python community_wiki_compute.py --community ./my-community --output ./my-community/state
 """
 import argparse
 import json

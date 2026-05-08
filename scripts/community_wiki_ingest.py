@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-caios_ingest.py — 导入 Event 数据到社区
+community_wiki_ingest.py — 导入 Event 数据到社区
 
 支持：
   - 单条 JSON 字符串录入
@@ -9,10 +9,10 @@ caios_ingest.py — 导入 Event 数据到社区
 
 Usage:
     # 单条录入
-    python caios_ingest.py --community ./my-community --event '{"type":"activity",...}'
+    python community_wiki_ingest.py --community ./my-community --event '{"type":"activity",...}'
 
     # 批量导入
-    python caios_ingest.py --community ./my-community --events-file events.jsonl
+    python community_wiki_ingest.py --community ./my-community --events-file events.jsonl
 """
 import argparse
 import json

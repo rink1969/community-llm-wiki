@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-caios_query.py — 社区查询与导航接口
+community_wiki_query.py — 社区查询与导航接口
 
 支持查询类型：
   - state      : 社区整体状态
@@ -9,10 +9,10 @@ caios_query.py — 社区查询与导航接口
   - recommend  : 为指定用户推荐连接/活动
 
 Usage:
-    python caios_query.py --community ./my-community --query state
-    python caios_query.py --community ./my-community --query person --id alice
-    python caios_query.py --community ./my-community --query graph --depth 2
-    python caios_query.py --community ./my-community --query recommend --for alice
+    python community_wiki_query.py --community ./my-community --query state
+    python community_wiki_query.py --community ./my-community --query person --id alice
+    python community_wiki_query.py --community ./my-community --query graph --depth 2
+    python community_wiki_query.py --community ./my-community --query recommend --for alice
 """
 import argparse
 import json
@@ -30,7 +30,7 @@ def load_json(path: str) -> dict | None:
 def query_state(community_dir: str):
     state = load_json(os.path.join(community_dir, "state", "state.json"))
     if not state:
-        print("State not computed yet. Run caios_compute.py first.")
+        print("State not computed yet. Run community_wiki_compute.py first.")
         return
     print(json.dumps(state, ensure_ascii=False, indent=2))
 
@@ -58,7 +58,7 @@ def query_person(community_dir: str, person_id: str):
 def query_graph(community_dir: str, depth: int | None = None, center: str | None = None):
     graph = load_json(os.path.join(community_dir, "state", "graph.json"))
     if not graph:
-        print("Graph not computed yet. Run caios_compute.py first.")
+        print("Graph not computed yet. Run community_wiki_compute.py first.")
         return
 
     if not center:
@@ -99,7 +99,7 @@ def query_recommend(community_dir: str, person_id: str):
     graph = load_json(os.path.join(community_dir, "state", "graph.json"))
     people_dir = os.path.join(community_dir, "people")
     if not graph:
-        print("Graph not computed yet. Run caios_compute.py first.")
+        print("Graph not computed yet. Run community_wiki_compute.py first.")
         return
 
     # Build adjacency

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-caios_export.py — 导出社区数据为多种格式
+community_wiki_export.py — 导出社区数据为多种格式
 
 支持格式：
   - gexf     : GEXF 图格式（Gephi 兼容）
@@ -9,8 +9,8 @@ caios_export.py — 导出社区数据为多种格式
   - csv      : 节点/边 CSV
 
 Usage:
-    python caios_export.py --community ./my-community --format gexf --output graph.gexf
-    python caios_export.py --community ./my-community --format markdown --output report.md
+    python community_wiki_export.py --community ./my-community --format gexf --output graph.gexf
+    python community_wiki_export.py --community ./my-community --format markdown --output report.md
 """
 import argparse
 import json

@@ -1,5 +1,5 @@
 ---
-name: caios-community-os
+name: community-llm-wiki
 description: "Community AI-OS (社区土地神): Event-driven community knowledge graph with co-presence, emergence, and structural freedom metrics."
 version: 1.0.0
 author: Hermes Agent
@@ -148,17 +148,17 @@ community_xiaoyao = average(xiaoyao(person))
 mkdir -p ./my-community/{events,people,community,state,graph}
 
 # 使用脚本初始化
-python scripts/caios_init.py --name "我的社区" --values "共在,涌现,逍遥" --output ./my-community
+python scripts/community_wiki_init.py --name "我的社区" --values "共在,涌现,逍遥" --output ./my-community
 ```
 
 ### 录入 Event
 
 ```bash
 # 从 JSON 文件批量导入 Events
-python scripts/caios_ingest.py --community ./my-community --events events.jsonl
+python scripts/community_wiki_ingest.py --community ./my-community --events events.jsonl
 
 # 或单条录入
-python scripts/caios_ingest.py --community ./my-community --event '{
+python scripts/community_wiki_ingest.py --community ./my-community --event '{
   "type": "activity",
   "initiator": "alice",
   "co_creators": ["bob"],
@@ -171,7 +171,7 @@ python scripts/caios_ingest.py --community ./my-community --event '{
 
 ```bash
 # 计算关系图谱和社区状态
-python scripts/caios_compute.py --community ./my-community --output ./my-community/state
+python scripts/community_wiki_compute.py --community ./my-community --output ./my-community/state
 
 # 输出：graph.json + state.json
 ```
@@ -180,16 +180,16 @@ python scripts/caios_compute.py --community ./my-community --output ./my-communi
 
 ```bash
 # 查询社区状态
-python scripts/caios_query.py --community ./my-community --query "state"
+python scripts/community_wiki_query.py --community ./my-community --query "state"
 
 # 查询个人档案
-python scripts/caios_query.py --community ./my-community --query "person" --id alice
+python scripts/community_wiki_query.py --community ./my-community --query "person" --id alice
 
 # 查询关系网络
-python scripts/caios_query.py --community ./my-community --query "graph" --depth 2
+python scripts/community_wiki_query.py --community ./my-community --query "graph" --depth 2
 
 # 推荐连接
-python scripts/caios_query.py --community ./my-community --query "recommend" --for alice
+python scripts/community_wiki_query.py --community ./my-community --query "recommend" --for alice
 ```
 
 ## 目录结构
@@ -224,11 +224,11 @@ my-community/
 
 ## 脚本工具
 
-- `scripts/caios_init.py` — 初始化社区目录结构
-- `scripts/caios_ingest.py` — 导入 Event 数据
-- `scripts/caios_compute.py` — 计算关系图谱与社区状态
-- `scripts/caios_query.py` — 查询与导航接口
-
+- `scripts/community_wiki_init.py` — 初始化社区目录结构
+- `scripts/community_wiki_ingest.py` — 导入 Event 数据
+- `scripts/community_wiki_compute.py` — 计算关系图谱与社区状态
+- `scripts/community_wiki_query.py` — 查询与导航接口
+- `scripts/community_wiki_export.py` — 导出：GEXF / Cytoscape / Markdown / CSV
 详见各脚本的 `--help` 输出。
 
 ## 扩展建议
