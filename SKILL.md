@@ -227,9 +227,39 @@ my-community/
 - `scripts/community_wiki_init.py` — 初始化社区目录结构
 - `scripts/community_wiki_ingest.py` — 导入 Event 数据
 - `scripts/community_wiki_compute.py` — 计算关系图谱与社区状态
-- `scripts/community_wiki_query.py` — 查询与导航接口
+- `scripts/community_wiki_generate.py` — **生成 Markdown Wiki**（核心输出）
+- `scripts/community_wiki_query.py` — 查询接口：state / person / graph / recommend
 - `scripts/community_wiki_export.py` — 导出：GEXF / Cytoscape / Markdown / CSV
 详见各脚本的 `--help` 输出。
+
+## 最终输出：Markdown Wiki
+
+`community_wiki_generate.py` 是核心输出脚本，它将社区数据生成为一组互相关联的 **Markdown 文件**，形成完整的社区知识图谱 Wiki：
+
+```
+wiki/
+├── index.md              # 索引页（总目录）
+├── community.md          # 社区主页（价值观 + 三指标 + 活跃成员）
+├── graph.md              # 关系图谱（所有关系边 + 密度 + 共同 Event）
+├── log.md                # 操作日志
+├── people/
+│   ├── alice.md          # 个人页（逍遥指数 + Event 记录 + 关系网络）
+│   ├── bob.md
+│   └── ...
+└── events/
+    ├── evt_001.md        # Event 页（参与者 + 角色 + 协作产出）
+    ├── evt_002.md
+    └── ...
+```
+
+### 特性
+
+- **[[wikilinks]] 互相关联**：所有页面通过 `[[page|title]]` 互相链接
+- **YAML frontmatter**：每页都有结构化元数据，支持 Obsidian Dataview 查询
+- **表格化指标**：社区状态、个人逍遥指数、关系密度全部用表格呈现
+- **Obsidian 原生兼容**：直接作为 Obsidian vault 打开，Graph View 可视化关系网络
+- **GitHub 友好**：标准 Markdown，GitHub 可渲染
+- **纯文本、无数据库**：任何文本编辑器均可阅读和编辑
 
 ## 扩展建议
 

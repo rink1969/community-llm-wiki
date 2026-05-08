@@ -16,11 +16,13 @@ python scripts/community_wiki_ingest.py --community ./my-community --events-file
 # 3. 计算图谱与状态
 python scripts/community_wiki_compute.py --community ./my-community
 
-# 4. 查询与导航
-python scripts/community_wiki_query.py --community ./my-community --query state
-python scripts/community_wiki_query.py --community ./my-community --query recommend --for alice
+# 4. 生成 Markdown Wiki（核心输出）
+python scripts/community_wiki_generate.py --community ./my-community
 
-# 5. 导出数据
+# 5. 查询与导航
+python scripts/community_wiki_query.py --community ./my-community --query state
+
+# 6. 导出数据（可选）
 python scripts/community_wiki_export.py --community ./my-community --format markdown --output report.md
 ```
 
@@ -45,6 +47,7 @@ my-community/
 | `community_wiki_init.py` | 初始化社区目录结构 |
 | `community_wiki_ingest.py` | 导入 Event 数据，自动更新 Person event_refs |
 | `community_wiki_compute.py` | 计算关系图谱（Graph）与社区三指标状态 |
+| `community_wiki_generate.py` | **生成 Markdown Wiki**（核心输出） |
 | `community_wiki_query.py` | 查询接口：state / person / graph / recommend |
 | `community_wiki_export.py` | 导出：GEXF / Cytoscape / Markdown / CSV |
 

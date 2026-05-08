@@ -1,0 +1,22 @@
+{
+  "id": "evt_001",
+  "type": "activity",
+  "timestamp": 1715200000,
+  "initiator": "alice",
+  "co_creators": [
+    "bob"
+  ],
+  "participants": [
+    "carol",
+    "dave"
+  ],
+  "metadata": {
+    "title": "周末共创会"
+  },
+  "artifacts": [
+    {
+      "type": "photo",
+      "url": "https://example.com/photo1.jpg"
+    }
+  ]
+}

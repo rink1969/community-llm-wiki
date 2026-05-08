@@ -1,0 +1,121 @@
+{
+  "nodes": [
+    {
+      "id": "alice"
+    },
+    {
+      "id": "bob"
+    },
+    {
+      "id": "carol"
+    },
+    {
+      "id": "dave"
+    },
+    {
+      "id": "eve"
+    }
+  ],
+  "edges": [
+    {
+      "source": "alice",
+      "target": "bob",
+      "density": 6.0,
+      "type": "normal",
+      "events": [
+        "evt_001",
+        "evt_002"
+      ]
+    },
+    {
+      "source": "alice",
+      "target": "carol",
+      "density": 4.0,
+      "type": "normal",
+      "events": [
+        "evt_001",
+        "evt_002"
+      ]
+    },
+    {
+      "source": "alice",
+      "target": "dave",
+      "density": 2.7,
+      "type": "weak",
+      "events": [
+        "evt_001",
+        "evt_002"
+      ]
+    },
+    {
+      "source": "bob",
+      "target": "carol",
+      "density": 4.2,
+      "type": "normal",
+      "events": [
+        "evt_001",
+        "evt_002"
+      ]
+    },
+    {
+      "source": "bob",
+      "target": "dave",
+      "density": 2.7,
+      "type": "weak",
+      "events": [
+        "evt_001",
+        "evt_002"
+      ]
+    },
+    {
+      "source": "carol",
+      "target": "dave",
+      "density": 2.2,
+      "type": "weak",
+      "events": [
+        "evt_001",
+        "evt_002"
+      ]
+    },
+    {
+      "source": "bob",
+      "target": "eve",
+      "density": 1.5,
+      "type": "weak",
+      "events": [
+        "evt_002"
+      ]
+    },
+    {
+      "source": "alice",
+      "target": "eve",
+      "density": 1.2,
+      "type": "weak",
+      "events": [
+        "evt_002"
+      ]
+    },
+    {
+      "source": "carol",
+      "target": "eve",
+      "density": 1.2,
+      "type": "weak",
+      "events": [
+        "evt_002"
+      ]
+    },
+    {
+      "source": "dave",
+      "target": "eve",
+      "density": 1.0,
+      "type": "weak",
+      "events": [
+        "evt_002"
+      ]
+    }
+  ],
+  "stats": {
+    "node_count": 5,
+    "edge_count": 10
+  }
+}

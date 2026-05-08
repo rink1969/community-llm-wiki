@@ -1,0 +1,17 @@
+{
+  "id": "eve",
+  "profile": {},
+  "skills": [],
+  "interests": [],
+  "links": {},
+  "works_input": [],
+  "event_refs": [
+    {
+      "event_id": "evt_002",
+      "role": "participant",
+      "type": "project",
+      "timestamp": 1715300000
+    }
+  ],
+  "external_inputs": []
+}

@@ -1,0 +1,23 @@
+{
+  "id": "bob",
+  "profile": {},
+  "skills": [],
+  "interests": [],
+  "links": {},
+  "works_input": [],
+  "event_refs": [
+    {
+      "event_id": "evt_001",
+      "role": "co_creator",
+      "type": "activity",
+      "timestamp": 1715200000
+    },
+    {
+      "event_id": "evt_002",
+      "role": "initiator",
+      "type": "project",
+      "timestamp": 1715300000
+    }
+  ],
+  "external_inputs": []
+}

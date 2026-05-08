@@ -1,0 +1,24 @@
+{
+  "id": "示例社区",
+  "name": "示例社区",
+  "values": [
+    "共在",
+    "涌现",
+    "逍遥"
+  ],
+  "manifesto": "",
+  "tags": [],
+  "founders": [
+    "alice"
+  ],
+  "admins": [
+    "alice"
+  ],
+  "treasury": {
+    "currency": "",
+    "balance": 0.0,
+    "policy": ""
+  },
+  "links": {},
+  "created_at": 1778250627
+}

@@ -1,0 +1,23 @@
+{
+  "id": "alice",
+  "profile": {},
+  "skills": [],
+  "interests": [],
+  "links": {},
+  "works_input": [],
+  "event_refs": [
+    {
+      "event_id": "evt_001",
+      "role": "initiator",
+      "type": "activity",
+      "timestamp": 1715200000
+    },
+    {
+      "event_id": "evt_002",
+      "role": "co_creator",
+      "type": "project",
+      "timestamp": 1715300000
+    }
+  ],
+  "external_inputs": []
+}
