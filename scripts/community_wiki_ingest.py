@@ -18,8 +18,38 @@ Usage:
 import argparse
 import json
 import os
+import subprocess
 import sys
 from datetime import datetime, timezone
+
+
+def git_commit(repo_dir: str, message: str):
+    """Stage all changes and commit if there are any."""
+    git_dir = os.path.join(repo_dir, ".git")
+    if not os.path.isdir(git_dir):
+        return  # Not a git repo, skip silently
+    try:
+        # Check if there are any changes
+        result = subprocess.run(
+            ["git", "status", "--porcelain"],
+            cwd=repo_dir,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        if not result.stdout.strip():
+            return  # Nothing to commit
+
+        subprocess.run(["git", "add", "-A"], cwd=repo_dir, check=True, capture_output=True)
+        subprocess.run(
+            ["git", "commit", "-m", message],
+            cwd=repo_dir,
+            check=True,
+            capture_output=True,
+        )
+        print(f"Git commit: {message}")
+    except subprocess.CalledProcessError as e:
+        print(f"Warning: git commit failed: {e}")
 
 
 def load_people(people_dir: str) -> dict:
@@ -182,6 +212,9 @@ def ingest_event(community_dir: str, event: dict) -> tuple[str, list[str]]:
     
     with open(log_path, "a", encoding="utf-8") as f:
         f.write("\n".join(log_entry) + "\n")
+
+    # Git commit
+    git_commit(community_dir, f"ingest: Add event {event['id']} ({event_type})")
 
     return event_path, warnings
 

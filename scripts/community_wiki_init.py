@@ -13,7 +13,47 @@ Usage:
 import argparse
 import json
 import os
+import subprocess
 from datetime import datetime, timezone
+
+
+def git_init_repo(repo_dir: str):
+    """Initialize git repo if not already one."""
+    git_dir = os.path.join(repo_dir, ".git")
+    if os.path.isdir(git_dir):
+        print("Git repo already exists, skipping git init")
+        return
+    try:
+        subprocess.run(["git", "init"], cwd=repo_dir, check=True, capture_output=True)
+        print("Git repo initialized")
+    except subprocess.CalledProcessError as e:
+        print(f"Warning: git init failed: {e}")
+
+
+def git_commit(repo_dir: str, message: str):
+    """Stage all changes and commit if there are any."""
+    try:
+        # Check if there are any changes
+        result = subprocess.run(
+            ["git", "status", "--porcelain"],
+            cwd=repo_dir,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        if not result.stdout.strip():
+            return  # Nothing to commit
+        
+        subprocess.run(["git", "add", "-A"], cwd=repo_dir, check=True, capture_output=True)
+        subprocess.run(
+            ["git", "commit", "-m", message],
+            cwd=repo_dir,
+            check=True,
+            capture_output=True,
+        )
+        print(f"Git commit: {message}")
+    except subprocess.CalledProcessError as e:
+        print(f"Warning: git commit failed: {e}")
 
 
 def init_community(name: str, values: list[str], output_dir: str, founders: list[str] | None = None):
@@ -212,7 +252,11 @@ def init_community(name: str, values: list[str], output_dir: str, founders: list
     with open(os.path.join(output_dir, "graph.md"), "w", encoding="utf-8") as f:
         f.write("\n".join(graph_lines) + "\n")
 
-    print(f"Community initialized at: {output_dir}")
+    # Git init and first commit
+    git_init_repo(output_dir)
+    git_commit(output_dir, f"init: Community '{name}' initialized")
+
+    print(f"\nCommunity initialized at: {output_dir}")
     print(f"  - SCHEMA.md (社区约定)")
     print(f"  - index.md (总索引)")
     print(f"  - community.md (社区主页)")
@@ -222,6 +266,7 @@ def init_community(name: str, values: list[str], output_dir: str, founders: list
     print(f"  - people/ (成员页)")
     print(f"  - events/ (Event页)")
     print(f"  - _data/ (机器生成的 JSON)")
+    print(f"  - .git/ (版本追踪)")
 
 
 def main():

@@ -16,6 +16,7 @@ import argparse
 import json
 import math
 import os
+import subprocess
 from collections import defaultdict
 from datetime import datetime, timezone
 
@@ -31,6 +32,35 @@ CONTRIB = {
     ("participant", "co_creator"): 1.2,
     ("participant", "participant"): 1.0,
 }
+
+
+def git_commit(repo_dir: str, message: str):
+    """Stage all changes and commit if there are any."""
+    git_dir = os.path.join(repo_dir, ".git")
+    if not os.path.isdir(git_dir):
+        return  # Not a git repo, skip silently
+    try:
+        # Check if there are any changes
+        result = subprocess.run(
+            ["git", "status", "--porcelain"],
+            cwd=repo_dir,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        if not result.stdout.strip():
+            return  # Nothing to commit
+
+        subprocess.run(["git", "add", "-A"], cwd=repo_dir, check=True, capture_output=True)
+        subprocess.run(
+            ["git", "commit", "-m", message],
+            cwd=repo_dir,
+            check=True,
+            capture_output=True,
+        )
+        print(f"Git commit: {message}")
+    except subprocess.CalledProcessError as e:
+        print(f"Warning: git commit failed: {e}")
 
 
 def load_json(path: str) -> dict | None:
@@ -685,6 +715,13 @@ def main():
     ]
     with open(log_path, "a", encoding="utf-8") as f:
         f.write("\n".join(log_entry) + "\n")
+
+    # Git commit
+    git_commit(
+        community_dir,
+        f"refresh: {len(events)} events, {len(people)} people, "
+        f"co_presence={state['co_presence']}, emergence={state['emergence']}, xiaoyao={state['xiaoyao']}"
+    )
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 ---
 name: community-llm-wiki
 description: "Community AI-OS (社区土地神): Event-driven community knowledge graph with co-presence, emergence, and structural freedom metrics."
-version: 1.0.0
+version: 1.1.0
 author: Hermes Agent
 license: MIT
 metadata:
@@ -139,10 +139,11 @@ NR = new_connections / total_connections      （网络扩展）
 community_xiaoyao = average(xiaoyao(person))
 ```
 
-## 目录结构（Obsidian Vault）
+## 目录结构（Obsidian Vault + Git 追踪）
 
 ```
 my-community/
+├── .git/                   # Git 版本控制（自动初始化）
 ├── SCHEMA.md               # 社区约定与结构规则
 ├── index.md                # 总索引
 ├── community.md            # 社区主页（价值观 + 状态指标）
@@ -161,8 +162,10 @@ my-community/
     ├── community.json
     ├── events/
     ├── people/
-    ├── state.json
-    └── graph.json
+    ├── state/
+    │   ├── state.json
+    │   └── graph.json
+    └── ...
 ```
 
 ### 设计原则
@@ -172,27 +175,43 @@ my-community/
 3. **Markdown 文件由脚本自动生成/刷新** — 保持与 _data/ 同步
 4. **[[wikilinks]] 互相关联** — Obsidian Graph View 可视化
 5. **YAML frontmatter** — 支持 Dataview 查询
-6. **log.md append-only** — 记录所有变更
+5. **log.md append-only** — 记录所有变更
+6. **Git 自动追踪** — 每次操作自动 commit，保留完整历史
 
 ## 使用方式
 
-### 初始化社区
+### 初始化社区（自动创建 Git 仓库）
 
 ```bash
 # 创建社区数据目录
 mkdir -p ./my-community
 
-# 使用脚本初始化
+# 使用脚本初始化（会自动 git init + 首次 commit）
 python scripts/community_wiki_init.py --name "我的社区" --values "共在,涌现,逍遥" --output ./my-community
+
+# 输出示例：
+# Git repo initialized
+# Git commit: init: Community '我的社区' initialized
+# Community initialized at: ./my-community
+#   - SCHEMA.md (社区约定)
+#   - index.md (总索引)
+#   - community.md (社区主页)
+#   - state.md (状态历史)
+#   - graph.md (关系图谱)
+#   - log.md (操作日志)
+#   - people/ (成员页)
+#   - events/ (Event页)
+#   - _data/ (机器生成的 JSON)
+#   - .git/ (版本追踪)
 ```
 
-### 录入 Event
+### 录入 Event（自动 Git commit）
 
 ```bash
-# 从 JSON 文件批量导入 Events
+# 从 JSON 文件批量导入 Events（每条 event 导入后自动 commit）
 python scripts/community_wiki_ingest.py --community ./my-community --events events.jsonl
 
-# 或单条录入
+# 或单条录入（导入后自动 commit）
 python scripts/community_wiki_ingest.py --community ./my-community --event '{
   "type": "activity",
   "initiator": "alice",
@@ -200,12 +219,16 @@ python scripts/community_wiki_ingest.py --community ./my-community --event '{
   "participants": ["carol", "dave"],
   "metadata": {"title": "周末共创会"}
 }'
+
+# 输出示例：
+# Ingested: ./my-community/_data/events/evt_xxx.json
+# Git commit: ingest: Add event evt_xxx (activity)
 ```
 
-### 刷新 Wiki（计算 + 生成 Markdown）
+### 刷新 Wiki（计算 + 生成 Markdown + 自动 Git commit）
 
 ```bash
-# 一键刷新：计算图谱状态 + 生成所有 Markdown
+# 一键刷新：计算图谱状态 + 生成所有 Markdown + 自动 commit
 python scripts/community_wiki_refresh.py --community ./my-community
 
 # 这个脚本会：
@@ -213,6 +236,13 @@ python scripts/community_wiki_refresh.py --community ./my-community
 # 2. 计算 graph.json + state.json
 # 3. 生成/更新所有 Markdown 页面
 # 4. 追加 log.md
+# 5. 自动 git commit（包含状态指标）
+
+# 输出示例：
+# Loaded 5 events, 4 people
+# === Community Wiki 更新摘要 ===
+# ...
+# Git commit: refresh: 5 events, 4 people, co_presence=2.5, emergence=1.2, xiaoyao=0.85
 ```
 
 ### 查询与导航（Agent 层）
@@ -233,15 +263,40 @@ python scripts/community_wiki_query.py --community ./my-community --query "recom
 
 ## 脚本工具
 
-| 脚本 | 功能 |
-|------|------|
-| `community_wiki_init.py` | 初始化社区目录结构 |
-| `community_wiki_ingest.py` | 导入 Event 数据，自动更新 Person event_refs |
-| `community_wiki_refresh.py` | **核心脚本**：计算图谱状态 + 生成所有 Markdown |
-| `community_wiki_query.py` | 查询接口：state / person / graph / recommend |
-| `community_wiki_export.py` | 导出：GEXF / Cytoscape / Markdown / CSV |
+| 脚本 | 功能 | Git 操作 |
+|------|------|---------|
+| `community_wiki_init.py` | 初始化社区目录结构 | `git init` + 首次 commit |
+| `community_wiki_ingest.py` | 导入 Event 数据，自动更新 Person event_refs | 每条 event 自动 commit |
+| `community_wiki_refresh.py` | **核心脚本**：计算图谱状态 + 生成所有 Markdown | 刷新后自动 commit（含状态指标） |
+| `community_wiki_query.py` | 查询接口：state / person / graph / recommend | 只读，不操作 Git |
+| `community_wiki_export.py` | 导出：GEXF / Cytoscape / Markdown / CSV | 只读，不操作 Git |
 
 详见各脚本的 `--help` 输出。
+
+### Git 集成说明
+
+**自动追踪**：
+- `init.py` 初始化社区时自动运行 `git init`，创建 `.git/` 目录
+- `ingest.py` 每次导入 event 后自动 `git add -A && git commit`
+- `refresh.py` 刷新后自动 `git add -A && git commit`
+
+**Commit 规范**：
+- `init: Community 'xxx' initialized` — 初始化
+- `ingest: Add event evt_xxx (activity)` — 导入 event
+- `refresh: N events, M people, co_presence=X, emergence=Y, xiaoyao=Z` — 刷新
+
+**手动 Push 到 GitHub**：
+```bash
+# 配置远程仓库（一次性）
+git remote add origin https://github.com/username/community-wiki.git
+
+# 推送
+git push -u origin master
+
+# 之后每次更新后
+python scripts/community_wiki_refresh.py --community ./my-community
+git push
+```
 
 ## 最终输出：Obsidian 兼容的 Markdown Wiki
 
